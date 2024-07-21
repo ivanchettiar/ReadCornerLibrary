@@ -74,6 +74,13 @@ class Book(models.Model):
     genre = models.ManyToManyField(Genre, help_text="Select a genre for this book.")
     language = models.ForeignKey('Language',on_delete=models.SET_NULL,null=True)
 
+    def display_genre(self):
+        """Create a string for the Genre. This is required to display genre in Admin."""
+        return ", ".join(genre.name for genre in self.genre.all()[:3])
+    
+    #This below attricute assignment to the function helps set the column name in Admin Panel for this as Genre instead of 'Display Genre'.
+    display_genre.short_description = "Genre"
+
     def get_absolute_url(self):
         return reverse("book-detail", args=[str(self.id)])
     
